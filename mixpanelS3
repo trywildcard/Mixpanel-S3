@@ -15,27 +15,16 @@ class Runner:
             datetime.timedelta(date_delta), "%Y-%m-%d")
 
     def create_base_args(self, parser):
-        try:
-            bucket = os.environ['S3_BUCKET']
-            parser.add_argument('--bucket', default=bucket,
-                help='s3 bucket')
-        except:
-            parser.add_argument('--bucket', required=True,
-                help='s3 bucket')
-        try:
-            api_key = os.environ['MIXPANEL_KEY']
-            parser.add_argument('--apikey', default=api_key, 
-                help='mixpanel api key')
-        except:
-            parser.add_argument('--apikey', required=True, 
-                help='mixpanel api key')
-        try:
-            api_secret = os.environ['MIXPANEL_SECRET']
-            parser.add_argument('--apisecret', default=api_secret, 
-                help='mixpanel api secret')  
-        except:
-            parser.add_argument('--apisecret', required=True, 
-                help='mixpanel api secret')
+        def argument_with_environ_default(arg_name, env_arg, help):
+            try:
+                bucket = os.environ[env_arg]
+                parser.add_argument(arg_name, default=bucket, help=help)
+            except:
+                parser.add_argument(arg_name, required=True, help=help)
+        
+        argument_with_environ_default('--bucket', 'S3_BUCKET', 'S3 bucket')
+        argument_with_environ_default('--apikey', 'MIXPANEL_KEY', 'mixpanel api key')
+        argument_with_environ_default('--apisecret', 'MIXPANEL_SECRET', 'mixpanel api secret')
         parser.add_argument('--startdate', required=True, type=puller.parse_date,
                 help='start date')
         parser.add_argument('--enddate', 
