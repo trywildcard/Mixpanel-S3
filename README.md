@@ -7,6 +7,25 @@ Mixpanel-Puller is a simple python library for exporting Mixpanel data. Works by
 
 Run ```./mixpanel -h``` for usage instructions. Requires that [s3cmd](http://s3tools.org/s3cmd) is installed and configured properly.
 
+    usage: mixpanel [-h] [--bucket BUCKET] [--apikey APIKEY]
+                    [--apisecret APISECRET] --startdate STARTDATE
+                    [--enddate ENDDATE] [--tmpdir TMPDIR] [--dry]
+
+    Retrieve data from Mixpanel. Will use the MIXPANEL_KEY, MIXPANEL_SECRET and
+    S3_BUCKET environment variables if they are set.
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      --bucket BUCKET       s3 bucket
+      --apikey APIKEY       mixpanel api key
+      --apisecret APISECRET
+                            mixpanel api secret
+      --startdate STARTDATE
+                            start date
+      --enddate ENDDATE     end date
+      --tmpdir TMPDIR       Temporary directory
+      --dry                 dry mode
+
 Example usage:
 
 ```
