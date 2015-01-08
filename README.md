@@ -34,5 +34,3 @@ Example usage:
 ```
 
 You can find your Mixpanel keys by logging into your Mixpanel account, clicking the "Account" link on the upper right corner, and then selecting the "Projects" tab.
-
-If they are set, it will use the following environment variables: `MIXPANEL_KEY`, `MIXPANEL_SECRET` and `S3_BUCKET`.
