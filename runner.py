@@ -3,19 +3,42 @@ from lib.mixpanel_data_puller import extract_dates, stringify_date, parse_date
 from datetime import timedelta
 import uuid
 import subprocess
+import datetime
+import os
 
 class Runner:
 
+    def get_date(self, date_delta):
+        return datetime.datetime.strftime(datetime.datetime.now() + 
+            datetime.timedelta(date_delta), "%Y-%m-%d")
+
     def create_base_args(self, parser):
-        parser.add_argument('--bucket', required=True,
-                            help='s3 bucket')
-        parser.add_argument('--apikey', required=True,
-                            help='mixpanel api key')
-        parser.add_argument('--apisecret', required=True,
-                            help='mixpanel api secret')
+        try:
+            bucket = os.environ['S3_BUCKET']
+            parser.add_argument('--bucket', default=bucket,
+                help='s3 bucket')
+        except:
+            parser.add_argument('--bucket', required=True,
+                help='s3 bucket')
+        try:
+            api_key = os.environ['MIXPANEL_KEY']
+            parser.add_argument('--apikey', default=api_key, 
+                help='mixpanel api key')
+        except:
+            parser.add_argument('--apikey', required=True, 
+                help='mixpanel api key')
+        try:
+            api_secret = os.environ['MIXPANEL_SECRET']
+            parser.add_argument('--apisecret', default=api_secret, 
+                help='mixpanel api secret')  
+        except:
+            parser.add_argument('--apisecret', required=True, 
+                help='mixpanel api secret')
         parser.add_argument('--startdate', required=True, type=parse_date,
                             help='start date')
-        parser.add_argument('--enddate', required=True, type=parse_date,
+        parser.add_argument('--enddate', 
+                            default = self.get_date(-1),
+                            required=False, type=parse_date,
                             help='end date')
         parser.add_argument('--tmpdir', default="/tmp",
                             help='Temporary directory')
@@ -71,7 +94,10 @@ class Runner:
         self.put_s3_string_iter(string_iter, s3_filename, zip)
 
     def put_s3_file(self, filename, bucket):
-        self.run_command(("s3cmd put -r %s s3://%s" % (filename, bucket)).split())
+        if bucket.startswith("s3://"):
+          self.run_command(("s3cmd put -r %s %s" % (filename, bucket)).split())
+        else:
+          self.run_command(("s3cmd put -r %s s3://%s" % (filename, bucket)).split())
 
     def date_iter(self, start_date, end_date):
         while start_date <= end_date:
