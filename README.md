@@ -24,7 +24,7 @@ Run ```./mixpanelS3 -h``` for usage instructions. Requires that [s3cmd](http://s
                             start date
       --enddate ENDDATE     end date
       --tmpdir TMPDIR       Temporary directory
-      --dry                 dry mode
+      --dry                 dry-run mode
 
 Example usage:
 

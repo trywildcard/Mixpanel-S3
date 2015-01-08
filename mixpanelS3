@@ -45,7 +45,7 @@ class Runner:
         parser.add_argument('--tmpdir', default="/tmp",
                 help='Temporary directory')
         parser.add_argument('--dry', default=False, dest='dry', action='store_true',
-                help='dry mode')
+                help='dry-run mode')
         parser.add_argument('--destdir', default='mixpanel-archive',
                 help='Destination directory')
 
