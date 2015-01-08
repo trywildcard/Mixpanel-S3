@@ -1,7 +1,7 @@
 Mixpanel-S3
 ===============
 
-Mixpanel-S3 is a simple python library for exporting Mixpanel data. Works by pulling data via [Mixpanel's export api](https://mixpanel.com/docs/api-documentation/data-export-api). Output is written to S3.
+Mixpanel-S3 is a simple Python library for exporting Mixpanel data to S3. It works by pulling data via [Mixpanel's export api](https://mixpanel.com/docs/api-documentation/data-export-api).
 
 ##Usage
 
