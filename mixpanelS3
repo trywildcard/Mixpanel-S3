@@ -44,8 +44,6 @@ class Runner:
                 help='end date')
         parser.add_argument('--tmpdir', default="/tmp",
                 help='Temporary directory')
-        parser.add_argument('--dry', default=False, dest='dry', action='store_true',
-                help='dry-run mode')
         parser.add_argument('--destdir', default='mixpanel-archive',
                 help='Destination directory')
 
@@ -108,8 +106,6 @@ class Runner:
             yield start_date
             start_date += datetime.timedelta(days=1)
 
-class SerialRunner(Runner):
-
     def create_parser(self):
         parser = argparse.ArgumentParser(
           description='Retrieve data from Mixpanel.' +
@@ -118,8 +114,6 @@ class SerialRunner(Runner):
         return parser
 
     def pull_data(self, date):
-        if self.args.dry:
-            return "DRY_MODE"
         return puller.pull(date, date, self.args.apikey, self.args.apisecret)
 
     def pull_data_for_date_range(self):
@@ -137,7 +131,7 @@ assert (subprocess
             "This script requires s3cmd tools to be installed" 
 
 def run(argv):
-    runner = SerialRunner()
+    runner = Runner()
     runner.parse_args(argv)
     runner.pull_data_for_date_range()
 
