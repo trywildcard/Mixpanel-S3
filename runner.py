@@ -35,15 +35,17 @@ class Runner:
             parser.add_argument('--apisecret', required=True, 
                 help='mixpanel api secret')
         parser.add_argument('--startdate', required=True, type=parse_date,
-                            help='start date')
+                help='start date')
         parser.add_argument('--enddate', 
-                            default = self.get_date(-1),
-                            required=False, type=parse_date,
-                            help='end date')
+                default = self.get_date(-1),
+                required=False, type=parse_date,
+                help='end date')
         parser.add_argument('--tmpdir', default="/tmp",
-                            help='Temporary directory')
+                help='Temporary directory')
         parser.add_argument('--dry', default=False, dest='dry', action='store_true',
-                            help='dry mode')
+                help='dry mode')
+        parser.add_argument('--destdir', default='mixpanel-archive',
+                help='Destination directory')
 
     def parse_args(self, argv):
         parser = self.create_parser()
@@ -57,7 +59,7 @@ class Runner:
         self.input_bucket = "%sinput/" % self.bucket
         self.code_bucket = "%scode/" % self.bucket
         self.emr_code_dir = "/mnt/code/"
-        self.output_bucket = "%soutput/" % self.bucket
+        self.output_bucket = "%s%s/" % (self.bucket, self.args.destdir)
 
     def rm(self, filename):
         self.run_command(['rm', '-f', filename])
