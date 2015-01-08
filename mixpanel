@@ -111,7 +111,10 @@ class Runner:
 class SerialRunner(Runner):
 
     def create_parser(self):
-        parser = argparse.ArgumentParser(description='Retrieve data from Mixpanel. Will use the MIXPANEL_KEY, MIXPANEL_SECRET and S3_BUCKET environment variables if they are set.')
+        parser = argparse.ArgumentParser(
+          description='Retrieve data from Mixpanel.' +
+              'Will use the MIXPANEL_KEY, MIXPANEL_SECRET ' + 
+              'and S3_BUCKET environment variables if they are set.')
         return parser
 
     def pull_data(self, date):
@@ -127,6 +130,11 @@ class SerialRunner(Runner):
             data_iter = self.pull_data(date)
             s3_output_file = "%s%s" % (self.output_bucket, date)
             self.put_s3_string_iter(data_iter, s3_output_file, zip=True)
+
+assert (subprocess
+            .check_output("s3cmd --version", shell=True)
+            .startswith("s3cmd version")),  \
+            "This script requires s3cmd tools to be installed" 
 
 def run(argv):
     runner = SerialRunner()
