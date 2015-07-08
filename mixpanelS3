@@ -8,11 +8,12 @@ import subprocess
 import datetime
 import os
 
+
 class Runner:
 
     def get_date(self, date_delta):
-        return datetime.datetime.strftime(datetime.datetime.now() + 
-            datetime.timedelta(date_delta), "%Y-%m-%d")
+        return (datetime.datetime.strftime(datetime.datetime.now() +
+                datetime.timedelta(date_delta), "%Y-%m-%d"))
 
     def create_base_args(self, parser):
         def argument_with_environ_default(arg_name, env_arg, help):
@@ -21,20 +22,19 @@ class Runner:
                 parser.add_argument(arg_name, default=bucket, help=help)
             except:
                 parser.add_argument(arg_name, required=True, help=help)
-        
+
         argument_with_environ_default('--bucket', 'S3_BUCKET', 'S3 bucket')
         argument_with_environ_default('--apikey', 'MIXPANEL_KEY', 'mixpanel api key')
         argument_with_environ_default('--apisecret', 'MIXPANEL_SECRET', 'mixpanel api secret')
         parser.add_argument('--startdate', required=True, type=puller.parse_date,
-                help='start date')
-        parser.add_argument('--enddate', 
-                default = self.get_date(-1),
-                required=False, type=puller.parse_date,
-                help='end date')
+                            help='start date')
+        parser.add_argument('--enddate', default=self.get_date(-1),
+                            required=False, type=puller.parse_date,
+                            help='end date')
         parser.add_argument('--tmpdir', default="/tmp",
-                help='Temporary directory')
+                            help='Temporary directory')
         parser.add_argument('--destdir', default='mixpanel-archive',
-                help='Destination directory')
+                            help='Destination directory')
 
     def parse_args(self, argv):
         parser = self.create_parser()
@@ -60,8 +60,6 @@ class Runner:
 
     def run_command(self, cmd):
         print "Running: %s" % " ".join(cmd)
-        if self.args.dry:
-            return
         exit_code = subprocess.call(cmd)
         if exit_code != 0:
             raise Exception("Error: Exit code %d found for command: %s" % (exit_code, cmd))
@@ -98,8 +96,8 @@ class Runner:
     def create_parser(self):
         parser = argparse.ArgumentParser(
           description='Retrieve data from Mixpanel.' +
-              'Will use the MIXPANEL_KEY, MIXPANEL_SECRET ' + 
-              'and S3_BUCKET environment variables if they are set.')
+                      'Will use the MIXPANEL_KEY, MIXPANEL_SECRET ' +
+                      'and S3_BUCKET environment variables if they are set.')
         return parser
 
     def pull_data(self, date):
@@ -114,10 +112,9 @@ class Runner:
             s3_output_file = "%s%s" % (self.output_bucket, date)
             self.put_s3_string_iter(data_iter, s3_output_file, zip=True)
 
-assert (subprocess
-            .check_output("s3cmd --version", shell=True)
-            .startswith("s3cmd version")),  \
-            "This script requires s3cmd tools to be installed" 
+assert (subprocess.check_output("s3cmd --version", shell=True).startswith("s3cmd version")), \
+    "This script requires s3cmd tools to be installed"
+
 
 def run(argv):
     runner = Runner()
