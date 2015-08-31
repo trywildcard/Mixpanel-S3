@@ -7,7 +7,9 @@ Mixpanel-S3 is a simple Python library for exporting Mixpanel data to S3. It wor
 
 Run ```./mixpanelS3 -h``` for usage instructions. Requires that [boto] is installed and configured properly.
 
-    usage example: ./mixpanelS3 --apikey [mixpanel_key] --apisecret [mixpanel_secret] --startdate 2015-08-21 --enddate 2015-08-21 --bucket wildcard-datascience --destdir mixpanel/mixpanel-appstore
+    usage example: ./mixpanelS3 --apikey [mixpanel_key] --apisecret [mixpanel_secret] 
+        --startdate 2015-08-21 --enddate 2015-08-21 
+        --bucket wildcard-datascience --destdir mixpanel/mixpanel-appstore
 
     Retrieve data from Mixpanel. Will use the MIXPANEL_KEY, MIXPANEL_SECRET and
     S3_BUCKET environment variables if they are set.
